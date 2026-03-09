@@ -1,0 +1,28 @@
+name: Build Watchface
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install Zepp CLI (Unofficial)
+        run: |
+          npm install --save-dev https://github.com/jvitela/zeppos-cli
+      - name: Build watchface
+        run: |
+          npx zeppos-cli build .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: watchface-zab
+          path: dist/*.zab
