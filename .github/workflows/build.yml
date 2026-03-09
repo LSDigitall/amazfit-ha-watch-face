@@ -9,20 +9,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      # 1️⃣ Clona o repositório
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Instala Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-      - name: Install Zepp CLI (Unofficial)
-        run: |
-          npm install --save-dev https://github.com/jvitela/zeppos-cli
-      - name: Build watchface
-        run: |
-          npx zeppos-cli build .
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+          node-version: '20'
+
+      # 3️⃣ Instala dependências
+      - name: Install dependencies
+        run: npm install
+
+      # 4️⃣ Executa build
+      - name: Build Watchface
+        run: npm run build
+
+      # 5️⃣ Guarda o resultado como artefacto
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: watchface-zab
-          path: dist/*.zab
+          name: watchface-build
+          path: dist/
